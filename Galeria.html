@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria | João André</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff512f;
+            --secondary: #dd2476;
+            --accent: #ff9a9e;
+            --bg-dark: #090e1a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Animação de Fundo */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: float 25s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(20vw, 30vh) rotate(180deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px;
+        }
+
+        /* Navegação */
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 60px;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 10px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 10px 18px;
+            border-radius: 40px;
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text-main);
+            background: var(--card-bg);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #e2e8f0, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        /* Gallery Grid (Restaurado para o comportamento original) */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            /* Removido o aspect-ratio fixo */
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Mantém o corte proporcional */
+            transition: var(--transition);
+            display: block; /* Remove espaços indesejados */
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(9, 14, 26, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .overlay span {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #fff;
+            transform: translateY(10px);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .overlay span {
+            transform: translateY(0);
+        }
+
+        /* Seção Título Separador */
+        .section-divider {
+            margin: 80px 0 40px;
+            text-align: left;
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+        }
+
+        .section-divider h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .btn-back:hover {
+            background: var(--text-main);
+            color: var(--bg-dark);
+            transform: translateX(-5px);
+        }
+
+        .mostrar-inteira img {
+    object-fit: cover !important;
+    object-position: center;
+}
+
+.p-horizontal {
+    aspect-ratio: 16 / 9 !important; /* Força proporção de paisagem (ex: foto de grupo) */
+}
+
+.p-vertical {
+    aspect-ratio: 3 / 4 !important; /* Força proporção de retrato (ex: foto em pé) */
+}
+
+.gallery-item img.ajuste {
+    object-position: 42% center;
+}
+
+.gallery-item img.ajuste2 {
+    object-position: 65% center;
+}
+
+.img-11 {
+    background-image: url('./img/11.jpeg');
+    background-size: 100% 100%; /* sem corte e sem borda */
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: var(--transition);
+}
+
+/* simula o efeito de zoom das outras imagens */
+.img-11:hover {
+    transform: scale(1.1);
+}
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .gallery-grid { grid-template-columns: 1fr; } /* Uma coluna no mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation">
+        <div class="bubble" style="width: 400px; height: 400px; top: 10%; right: -5%;"></div>
+        <div class="bubble" style="width: 300px; height: 300px; bottom: 5%; left: -5%; animation-delay: -5s;"></div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="index.html">Sobre mim</a></li>
+                <li><a href="galeria.html" class="active">Galeria</a></li>
+                <li><a href="contact.html">Contato</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>2025</h1>
+            <p>(2-0)</p>
+        </header>
+
+        <section class="gallery-grid">
+            <div class="gallery-item">
+                <img src="./img/1.jpeg" class="ajuste2" alt="Foco">
+                <div class="overlay"><span>Foco e disciplina</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/2.jpeg" class="ajuste" alt="Luta">
+                <div class="overlay"><span>🥊</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/3.jpeg" alt="Vitória">
+                <div class="overlay"><span>Primeira Vitória</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/4.jpeg" alt="Nocaute">
+                <div class="overlay"><span>Comemoração pós nocaute</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/7.jpeg" alt="Entrada">
+                <div class="overlay"><span>Entrada Triunfal</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/6.jpeg" alt="Peso">
+                <div class="overlay"><span>Peso Batido</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/5.jpeg" alt="❤️">
+                <div class="overlay"><span>❤️</span></div>
+            </div>
+            <div class="gallery-item mostrar-inteira">
+                <img src="./img/12.jpeg" alt="Ritual">
+                <div class="overlay"><span>☠️</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/9.jpeg" alt="Vitória 2">
+                <div class="overlay"><span>Segunda Vitória</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/10.jpeg" alt="Treino">
+                <div class="overlay"><span>Treino e disciplina</span></div>
+            </div>
+            <div class="gallery-item img-11">
+    <div class="overlay"><span>🌐</span></div>
+</div>
+            <div class="gallery-item">
+                <img src="./img/8.jpeg" alt="☠️">
+                <div class="overlay"><span>Wai Kru Ram Muay</span></div>
+            </div>
+        </section>
+
+        <div class="section-divider">
+            <h2>Tecnologia & Carreira</h2>
+            <p style="color: var(--text-dim)">O equilíbrio entre os ringues e o código.</p>
+        </div>
+
+        <section class="gallery-grid">
+            <div class="gallery-item">
+                <img src="./img/12+1.jpeg" alt="ADS">
+                <div class="overlay"><span>Estudos Análise e Desenvolvimento de Sistemas</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/14.jpeg" alt="Adaptive">
+                <div class="overlay"><span>Principal experiência: Adaptive tecnologia</span></div>
+            </div>
+            <div class="gallery-item">
+                <img src="./img/15.jpeg" alt="Experiências">
+                <div class="overlay"><span>Outros serviços como garçom e servente</span></div>
+            </div>
+        </section>
+
+        <footer>
+            <a href="index.html" class="btn-back">
+                ← Voltar ao Início
+            </a>
+        </footer>
+    </div>
+
+</body>
+</html>
